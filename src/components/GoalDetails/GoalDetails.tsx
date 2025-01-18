@@ -1,12 +1,23 @@
 import './GoalDetails.css'
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
-import {useState} from "react";
+import useGoalStore from "../../store/useGoalStore.ts";
 
-const GoalDetails = () => {
+type GoalDetailsProps = {
+    goalId: string;
+}
+
+const GoalDetails = ( { goalId } : GoalDetailsProps) => {
     const maxDate = new Date();
-    const [minDate, setMinDate] = useState(new Date(2025, 0, 5));
-    const [checkedDates, setCheckedDates] = useState(new Map<string, boolean>([]));
+
+    const goal = useGoalStore(state => state.goals.find(goal => goal.id === goalId));
+    const updateGoal = useGoalStore(state => state.updateGoal);
+
+    if (!goal) {
+        return null
+    }
+
+    const checkedDates = goal.checkedDates;
 
     const parseDateString = (dateKey: string): Date => {
         const [year, month, day] = dateKey.split('-').map(Number);
@@ -33,22 +44,30 @@ const GoalDetails = () => {
         } else {
             newCheckedDates.set(key, true);
         }
-        setCheckedDates(newCheckedDates);
+        goal.checkedDates = newCheckedDates;
+        updateGoal(goal);
+    }
+
+    if(!goal) {
+        return null
     }
 
     return (
         <>
             <h3>Total days {checkedDates.size}</h3>
-            <input type="date" value={getDateString(minDate)} max={getDateString(maxDate)}
-                   onChange={(e) => setMinDate(parseDateString(e.target.value))}/>
+            <input type="date" value={getDateString(goal.startDate)} max={getDateString(maxDate)}
+                   onChange={(e) => {
+                       goal.startDate = parseDateString(e.target.value)
+                       updateGoal(goal);
+                   }}/>
             <Calendar onClickDay={handleDayClick}
                       tileContent={({date}) => {
-                          return date >= minDate && date <= maxDate ? <div className='checkbox-wrapper-39'>
+                          return date >= goal.startDate && date <= maxDate ? <div className='checkbox-wrapper-39'>
                               <input type={'checkbox'} checked={isChecked(date)} onChange={() => handleDayClick(date)}/>
                               <span className="checkbox"></span>
                           </div> : undefined
                       }}
-                      minDate={minDate}
+                      minDate={goal.startDate}
                       maxDate={maxDate}
             />
         </>
