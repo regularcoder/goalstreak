@@ -3,15 +3,7 @@ import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import {useState} from "react";
 
-/*
-TODO:
-- Calculate streak
-
-- Allow specifying start date (set minDate to this)
-- Fetch checked state from a function
- */
-
-function GoalDetails() {
+const GoalDetails = () => {
     const maxDate = new Date();
     const [minDate, setMinDate] = useState(new Date(2025, 0, 5));
     const [checkedDates, setCheckedDates] = useState(new Map<string, boolean>([]));
