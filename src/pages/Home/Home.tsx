@@ -1,5 +1,4 @@
 import {IonContent, IonHeader, IonPage, IonTitle, IonToolbar} from '@ionic/react';
-// import './Tab1.css';
 import {useState} from "react";
 import {Goal} from "../../types/Goals.ts";
 import Goals from "../../components/Goals";

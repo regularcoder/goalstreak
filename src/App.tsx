@@ -52,9 +52,11 @@ const App: React.FC = () => (
     <IonReactRouter>
       <IonTabs>
         <IonRouterOutlet>
+          {/*@ts-ignore*/}
           <Route exact path="/">
             <Home />
           </Route>
+          {/*@ts-ignore*/}
           <Route exact path="/settings">
             <Settings />
           </Route>
