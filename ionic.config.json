@@ -1,0 +1,7 @@
+{
+  "name": "goals",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react-vite"
+}
